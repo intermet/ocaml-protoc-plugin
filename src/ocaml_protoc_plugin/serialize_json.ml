@@ -3,7 +3,7 @@ open Spec
 
 (** Serialize to json as per https://protobuf.dev/programming-guides/proto3/#json-options *)
 let value_error type_name json =
-  Result.raise (`Wrong_field_type (type_name, Json.to_string json))
+  Result.raise (`Wrong_field_type (type_name, Json.to_string json, "value_error serialize"))
 
 type field = string * Json.t
 
@@ -26,7 +26,7 @@ let key_to_string = function
   | `String s -> s
   | `Bool b -> string_of_bool b
   | `Int v -> string_of_int v
-  | json -> Result.raise (`Wrong_field_type ("map key", (Json.to_string json)))
+  | json -> Result.raise (`Wrong_field_type ("map key", (Json.to_string json), "key_to_string serialize_json"))
 
 let key ~json_names (_, name, json_name) =
   match json_names with

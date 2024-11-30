@@ -6,7 +6,7 @@ module FieldMap = Map.Make(String)
 type fields = Json.t FieldMap.t
 
 let value_error type_name json =
-  Result.raise (`Wrong_field_type (type_name, Json.to_string json))
+  Result.raise (`Wrong_field_type (type_name, Json.to_string json, "value_error deserialize json"))
 
 let to_int64 = function
   | `String s -> Int64.of_string s

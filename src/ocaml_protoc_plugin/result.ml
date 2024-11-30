@@ -1,7 +1,7 @@
 type error =
   [ `Premature_end_of_input
   | `Unknown_field_type of int
-  | `Wrong_field_type of string * string
+  | `Wrong_field_type of string * string * string
   | `Illegal_value of string * Field.t
   | `Unknown_enum_value of int
   | `Unknown_enum_name of string
@@ -34,11 +34,13 @@ let pp_error : Format.formatter -> [> error] -> unit = fun fmt -> function
   | `Wrong_field_type x ->
     (Format.fprintf fmt
        "`Wrong_field_type (@[<hov>";
-     ((fun (a0, a1) ->
+     ((fun (a0, a1, a2) ->
          Format.fprintf fmt "(@[";
          ((Format.fprintf fmt "%S") a0;
           Format.fprintf fmt ",@ ";
           (Format.fprintf fmt "%S") a1);
+          Format.fprintf fmt ",@ ";
+          (Format.fprintf fmt "%S") a2;
          Format.fprintf fmt "@])")) x;
      Format.fprintf fmt "@])")
   | `Illegal_value x ->

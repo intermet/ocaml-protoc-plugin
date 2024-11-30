@@ -1,7 +1,7 @@
 type error =
   [ `Premature_end_of_input
   | `Unknown_field_type of int
-  | `Wrong_field_type of string * string
+  | `Wrong_field_type of string * string * string
   | `Illegal_value of string * Field.t
   | `Unknown_enum_value of int
   | `Unknown_enum_name of string

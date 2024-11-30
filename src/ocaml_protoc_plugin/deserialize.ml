@@ -24,7 +24,7 @@ type (_, _) sentinel_list =
   | NNil_ext: (extensions -> 'a, 'a) sentinel_list
   | NCons : (sentinel_field_spec list  * 'a sentinel_getter) * ('b, 'c) sentinel_list -> ('a -> 'b, 'c) sentinel_list
 
-let error_wrong_field str field = Result.raise (`Wrong_field_type (str, Field.show field))
+let error_wrong_field str field expect = Result.raise (`Wrong_field_type (str, Field.show field, expect))
 let error_required_field_missing index spec = Result.raise (`Required_field_missing (index, Spec.show spec))
 
 let decode_zigzag v =
@@ -108,7 +108,7 @@ let read_field ~read:(expect, read_f) ~map v reader field_type =
   | true -> read_f reader |> map v
   | false ->
     let field = Reader.read_field_content field_type reader in
-    error_wrong_field "Deserialize" field
+    error_wrong_field "Deserialize" field (Field.string_of_field_type expect)
 
 let read_map_entry: type a b. read_key:a value -> read_value:b value -> Reader.t -> (a * b) = fun ~read_key ~read_value ->
   let Value (key_field_specs, default_key, get_key) = read_key in
@@ -164,7 +164,7 @@ let rec value: type a b. (a, b) compound -> a value = function
         read_f reader :: vs
       | ft ->
         let field = Reader.read_field_content ft reader in
-        error_wrong_field "Deserialize" field
+        error_wrong_field "Deserialize" field (Field.string_of_field_type ft)
     in
     Value ([(index, read)], [], List.rev)
   | Repeated ((index, _, _), spec, Not_packed) ->
