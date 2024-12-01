@@ -331,11 +331,11 @@ let rec emit_message ~params ~syntax ~scope ~type_db ~comment_db
       Code.emit signature `None "val to_proto: t -> Runtime'.Writer.t";
       Code.emit signature `None "(** Serialize the message to binary format *)\n";
 
-      Code.emit signature `None "val from_proto: Runtime'.Reader.t -> (t, [> Runtime'.Result.error]) Result.t";
+      Code.emit signature `None "val from_proto: Runtime'.Reader.t -> (t, [> Runtime'.Result.error]) Base.Result.t";
       Code.emit signature `None "(** Deserialize from binary format *)\n";
       Code.emit signature `None "val to_json: Runtime'.Json_options.t -> t -> Runtime'.Json.t";
       Code.emit signature `None "(** Serialize to Json (compatible with Yojson.Basic.t) *)\n";
-      Code.emit signature `None "val from_json: Runtime'.Json.t -> (t, [> Runtime'.Result.error]) Result.t";
+      Code.emit signature `None "val from_json: Runtime'.Json.t -> (t, [> Runtime'.Result.error]) Base.Result.t";
       Code.emit signature `None "(** Deserialize from Json (compatible with Yojson.Basic.t) *)\n";
 
       Code.emit signature `None "val name: unit -> string";
